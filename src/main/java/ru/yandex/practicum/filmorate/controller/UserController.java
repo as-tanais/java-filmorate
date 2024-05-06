@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ConditionsNotMetException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
+@Slf4j
 public class UserController {
 
     private final Map<Long, User> users = new HashMap<>();
@@ -48,6 +50,11 @@ public class UserController {
         return user;
     }
 
+    @PutMapping
+    public User update(@RequestBody User user){
+        return user;
+    }
+
     // вспомогательный метод для генерации идентификатора нового поста
     private long getNextId() {
         long currentMaxId = users.keySet()
@@ -57,5 +64,4 @@ public class UserController {
                 .orElse(0);
         return ++currentMaxId;
     }
-
 }
