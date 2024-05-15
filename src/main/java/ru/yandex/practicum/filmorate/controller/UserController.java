@@ -26,6 +26,9 @@ public class UserController {
 
     @PostMapping
     public User create(@Valid @RequestBody User user) {
+        if (user.getName() == null || user.getName().isBlank()) {
+            user.setName(user.getLogin());
+        }
         user.setId(getNextId());
         users.put(user.getId(), user);
         log.info("Create USER: " + user);
