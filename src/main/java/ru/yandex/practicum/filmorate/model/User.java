@@ -5,21 +5,19 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import lombok.Data;
-import lombok.ToString;
 
 import java.time.LocalDate;
 
 @Data
-@ToString
 public class User {
-    Long id;
+    private Long id;
     @Email
     @NotBlank
-    String email;
+    private String email;
     @NotBlank(message = "Login не может быть пустым.")
     @NotNull
-    String login;
-    String name;
+    private String login;
+    private String name;
     @Past(message = "День рождения не может быть в дудующем.")
-    LocalDate birthday;
+    private LocalDate birthday;
 }

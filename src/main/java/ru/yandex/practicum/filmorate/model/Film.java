@@ -15,15 +15,15 @@ import java.time.LocalDate;
 
 @Data
 public class Film {
-    Long id;
+    private Long id;
     @NotBlank(message = "Название не должно быть пустым")
     @NotNull
-    String name;
+    private String name;
     @Length(max = 200, message = "Максимальная длина описания — 200 символов")
     @NotNull
-    String description;
+    private String description;
     @CheckReleaseDate
-    LocalDate releaseDate;
+    private LocalDate releaseDate;
     @Positive
-    Integer duration;
+    private Integer duration;
 }
