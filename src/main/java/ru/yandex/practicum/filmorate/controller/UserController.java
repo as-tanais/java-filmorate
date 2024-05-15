@@ -1,11 +1,12 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ConditionsNotMetException;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,40 +20,40 @@ public class UserController {
 
     @GetMapping
     public Collection<User> findAll() {
+        log.info("Get all users");
         return users.values();
     }
 
     @PostMapping
-    public User create(@RequestBody User user) {
-        // проверяем выполнение необходимых условий
-        //проверка email
-        if (user.getEmail().isBlank() && !(user.getEmail().contains("@"))) {
-            throw new ConditionsNotMetException("Email не должен быть пустым");
-        }
-        //рповерка login
-        if (user.getLogin() == null || user.getLogin().contains(" ")) {
-            throw new ConditionsNotMetException("Login не может быть пустым и содержать пробелы");
-        }
-        //проверка даты рождения
-        if (!(user.getBirthday() == null)) {
-            if (user.getBirthday().isAfter(LocalDate.now())) {
-                throw new ConditionsNotMetException("Дата рождения не может быть в будующем");
-            }
-        }
-        //проверка name
-        if (user.getName().isBlank()) {
-            user.setName(user.getLogin());
-        }
-        // формируем дополнительные данные
+    public User create(@Valid @RequestBody User user) {
         user.setId(getNextId());
-        // сохраняем новую публикацию в памяти приложения
         users.put(user.getId(), user);
+        log.info("Create USER: " + user);
         return user;
     }
 
     @PutMapping
-    public User update(@RequestBody User user){
-        return user;
+    public User update(@Valid @RequestBody User newUser){
+        if (newUser.getId() == null ) {
+            throw new ConditionsNotMetException("Id должен быть указан");
+        }
+        if (users.containsKey(newUser.getId())){
+            User oldUser = users.get(newUser.getId());
+            log.info("Update User: " + oldUser);
+            oldUser.setEmail(newUser.getEmail());
+            if (!(newUser.getLogin() == null)) {
+                oldUser.setLogin(newUser.getLogin());
+            }
+            if (!(newUser.getName() == null)) {
+                oldUser.setName(newUser.getName());
+            }
+            if (!(newUser.getBirthday() == null)) {
+                oldUser.setBirthday(newUser.getBirthday());
+            }
+            log.info("Update User: " + oldUser);
+            return oldUser;
+        }
+        throw new NotFoundException("User с ID: " + newUser.getId() + " не найден.");
     }
 
     // вспомогательный метод для генерации идентификатора нового поста
