@@ -33,11 +33,11 @@ public class UserController {
     }
 
     @PutMapping
-    public User update(@Valid @RequestBody User newUser){
-        if (newUser.getId() == null ) {
+    public User update(@Valid @RequestBody User newUser) {
+        if (newUser.getId() == null) {
             throw new ConditionsNotMetException("Id должен быть указан");
         }
-        if (users.containsKey(newUser.getId())){
+        if (users.containsKey(newUser.getId())) {
             User oldUser = users.get(newUser.getId());
             log.info("Update User: " + oldUser);
             oldUser.setEmail(newUser.getEmail());
