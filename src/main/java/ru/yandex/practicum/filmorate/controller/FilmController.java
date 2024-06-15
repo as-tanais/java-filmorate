@@ -21,15 +21,15 @@ public class FilmController {
         this.filmService = filmService;
     }
 
-    @PostMapping
-    public Film create(@Valid @RequestBody Film film) {
-        return filmService.create(film);
-    }
-
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
         log.info("Put request for film");
         return filmService.update(film);
+    }
+
+    @PostMapping
+    public Film create(@Valid @RequestBody Film film) {
+        return filmService.create(film);
     }
 
     @GetMapping()
