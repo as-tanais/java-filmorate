@@ -8,9 +8,7 @@ import ru.yandex.practicum.filmorate.exception.ConditionsNotMetException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -54,6 +52,50 @@ public class InMemoryUserStorage implements UserStorage{
             return oldUser;
         }
         throw new NotFoundException("User с ID: " + newUser.getId() + " не найден.");
+    }
+
+    @Override
+    public User findUserById(long id) {
+        if (users.containsKey(id)) {
+            return users.get(id);
+        }
+        return null;
+    }
+
+    @Override
+    public void addFriend(@Valid @RequestBody long userId, long friendId) {
+        User user = findUserById(userId);
+        User friend = findUserById(friendId);
+        if (user != null && friend != null) {
+            user.getFriends().add(friendId);
+            friend.getFriends().add(userId);
+        } else {
+            throw new NotFoundException("User не найден.");
+        }
+    }
+
+    @Override
+    public void deleteFriend(@Valid @RequestBody long userId, long friendId) {
+        User user = findUserById(userId);
+        User friend = findUserById(friendId);
+        if (user != null && friend != null) {
+            user.getFriends().remove(friendId);
+            friend.getFriends().remove(userId);
+        } else {
+            throw new NotFoundException("User не найден.");
+        }
+    }
+
+    @Override
+    public List<User> getAllFriends(long userId) {
+        List<User> friends = new ArrayList<>();
+        User user = findUserById(userId);
+        if (user != null) {
+            for (Long id : user.getFriends()) {
+                friends.add(findUserById(id));
+            }
+        }
+        return friends;
     }
 
     // вспомогательный метод для генерации идентификатора нового поста
