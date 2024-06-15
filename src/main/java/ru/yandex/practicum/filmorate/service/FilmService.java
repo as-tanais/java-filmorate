@@ -19,7 +19,7 @@ public class FilmService {
 
     private final FilmStorage filmStorage;
 
-    public Film create(Film film){
+    public Film create(Film film) {
         return filmStorage.create(film);
     }
 
@@ -27,7 +27,7 @@ public class FilmService {
         return filmStorage.findAll();
     }
 
-    public Film update(Film film){
+    public Film update(Film film) {
         return filmStorage.update(film);
     }
 
