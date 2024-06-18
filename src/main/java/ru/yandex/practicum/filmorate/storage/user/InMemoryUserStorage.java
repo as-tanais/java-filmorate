@@ -66,7 +66,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public void deleteUser(long id){
+    public void deleteUser(long id) {
         log.info("Delete user " + id);
         User user = users.get(id);
         if (user != null) {
