@@ -16,12 +16,14 @@ public class InMemoryUserStorage implements UserStorage {
 
     private final Map<Long, User> users = new HashMap<>();
 
+    @Override
     public Collection<User> findAll() {
         log.info("Get all users");
         return users.values();
     }
 
-    public User create(@Valid @RequestBody User user) {
+    @Override
+    public User create(User user) {
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
@@ -31,7 +33,8 @@ public class InMemoryUserStorage implements UserStorage {
         return user;
     }
 
-    public User update(@Valid @RequestBody User newUser) {
+    @Override
+    public User update(User newUser) {
         if (newUser.getId() == null) {
             throw new ConditionsNotMetException("Id должен быть указан");
         }
@@ -63,39 +66,14 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public void addFriend(@Valid @RequestBody long userId, long friendId) {
-        User user = findUserById(userId);
-        User friend = findUserById(friendId);
-        if (user != null && friend != null) {
-            user.getFriends().add(friendId);
-            friend.getFriends().add(userId);
-        } else {
-            throw new NotFoundException("User не найден.");
-        }
-    }
-
-    @Override
-    public void deleteFriend(@Valid @RequestBody long userId, long friendId) {
-        User user = findUserById(userId);
-        User friend = findUserById(friendId);
-        if (user != null && friend != null) {
-            user.getFriends().remove(friendId);
-            friend.getFriends().remove(userId);
-        } else {
-            throw new NotFoundException("User не найден.");
-        }
-    }
-
-    @Override
-    public List<User> getAllFriends(long userId) {
-        List<User> friends = new ArrayList<>();
-        User user = findUserById(userId);
+    public void deleteUser(long id){
+        log.info("Delete user " + id);
+        User user = users.get(id);
         if (user != null) {
-            for (Long id : user.getFriends()) {
-                friends.add(findUserById(id));
-            }
+            users.remove(id);
+        }else {
+            throw new NotFoundException("User с ID: " + id + " не найден.");
         }
-        return friends;
     }
 
     // вспомогательный метод для генерации идентификатора нового поста

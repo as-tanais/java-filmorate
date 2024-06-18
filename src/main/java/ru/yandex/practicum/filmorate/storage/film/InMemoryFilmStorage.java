@@ -59,25 +59,19 @@ public class InMemoryFilmStorage implements FilmStorage {
     public Film findFilmById(long id) {
         if (films.containsKey(id)) {
             return films.get(id);
-        }
-        return null;
-    }
-
-
-    public void addLike(long filmId, long userId) {
-        Film film = findFilmById(filmId);
-        if (film != null) {
-            film.getLikes().add(userId);
-        } else {
-            throw new NotFoundException("Film с ID: " + filmId + " не найден.");
+        }else {
+            throw new NotFoundException("Film не найден");
         }
     }
+
 
     @Override
-    public void deleteLike(long filmId, long userId) {
-        Film film = findFilmById(filmId);
+    public void deleteFilm(long filmId) {
+        Film film = films.get(filmId);
         if (film != null) {
-            film.getLikes().remove(userId);
+            films.remove(filmId);
+        } else {
+            throw new NotFoundException("Такого фильма нет");
         }
     }
 
