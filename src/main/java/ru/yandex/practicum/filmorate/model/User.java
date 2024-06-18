@@ -17,7 +17,6 @@ public class User {
     @NotBlank
     private String email;
     @NotBlank(message = "Login не может быть пустым.")
-    @NotNull
     private String login;
     private String name;
     @Past(message = "День рождения не может быть в дудующем.")
