@@ -38,7 +38,7 @@ public class FilmController {
     }
 
     @DeleteMapping(value = "/{filmId}")
-    private void deleteFilm(@PathVariable Long filmId){
+    private void deleteFilm(@PathVariable Long filmId) {
         filmStorage.deleteFilm(filmId);
     }
 
