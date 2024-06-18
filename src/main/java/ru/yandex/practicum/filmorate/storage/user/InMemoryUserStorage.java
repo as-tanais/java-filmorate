@@ -61,8 +61,9 @@ public class InMemoryUserStorage implements UserStorage {
     public User findUserById(long id) {
         if (users.containsKey(id)) {
             return users.get(id);
+        } else {
+            throw new NotFoundException("User с ID: " + id + " не найден.");
         }
-        return null;
     }
 
     @Override
@@ -71,7 +72,7 @@ public class InMemoryUserStorage implements UserStorage {
         User user = users.get(id);
         if (user != null) {
             users.remove(id);
-        }else {
+        } else {
             throw new NotFoundException("User с ID: " + id + " не найден.");
         }
     }
