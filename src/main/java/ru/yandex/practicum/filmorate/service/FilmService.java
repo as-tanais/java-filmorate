@@ -24,7 +24,7 @@ public class FilmService {
         Film film = filmStorage.findFilmById(filmId);
         User user = userStorage.findUserById(userId);
         if (film != null && user != null) {
-            film.getLikes().remove(userId);
+            film.getLikes().add(userId);
         } else {
             throw new NotFoundException("Фильм или User не найден");
         }
@@ -40,7 +40,7 @@ public class FilmService {
         }
     }
 
-    public List<Film> getMostPopularFilms(Long count) {
+    public List<Film> getMostPopularFilms(int count) {
         return filmStorage.findAll().stream()
                 .sorted((f1, f2) -> f2.getLikes().size() - f1.getLikes().size())
                 .limit(count)
