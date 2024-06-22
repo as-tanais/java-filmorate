@@ -6,8 +6,6 @@ import jakarta.validation.constraints.Past;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Data
 public class User {
@@ -20,5 +18,5 @@ public class User {
     private String name;
     @Past(message = "День рождения не может быть в дудующем.")
     private LocalDate birthday;
-    private Set<Long> friends = new LinkedHashSet<>();
+
 }

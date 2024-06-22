@@ -27,5 +27,6 @@ public class Film {
     private LocalDate releaseDate;
     @Positive
     private Integer duration;
+    private Mpa mpa;
     private Set<Long> likes = new LinkedHashSet<>();
 }
