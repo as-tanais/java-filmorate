@@ -16,7 +16,6 @@ public class FriendshipDbStorage {
     private final UserRowMapper userRowMapper;
 
 
-
     public List<User> getAllFriends(Long id) {
         String sql = "SELECT u.id, u.email, u.login, u.name, u.birthday " +
                 "FROM FRIENDS AS f " +
@@ -27,8 +26,8 @@ public class FriendshipDbStorage {
     }
 
     public void removeFriend(long id, long friendId) {
-        String sql = "DELETE FROM FRIENDS WHERE user_id in (?, ?) AND friend_id in (?, ?)";
-        jdbcTemplate.update(sql, id, friendId, id, friendId);
+        String sql = "DELETE FROM FRIENDS WHERE user_id = ? and FRIEND_ID = ?";
+        jdbcTemplate.update(sql, id, friendId);
     }
 
     public void addFriend(Long id, Long friendId) {

@@ -51,6 +51,9 @@ public class UserService {
     }
 
     public List<User> getAllFriends(Long id) {
+        if (userDbStorage.findById(id).isEmpty()) {
+            throw new NotFoundException("Пользователь не найден.");
+        }
         return friendshipDbStorage.getAllFriends(id);
     }
 

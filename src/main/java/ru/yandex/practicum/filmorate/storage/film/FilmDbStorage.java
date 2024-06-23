@@ -1,52 +1,57 @@
 package ru.yandex.practicum.filmorate.storage.film;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.BaseRepository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-@RequiredArgsConstructor
-@Component
-public class FilmDbStorage implements FilmStorage{
+@Primary
+public class FilmDbStorage extends BaseRepository<Film> {
 
-    private final FilmRowMapper filmRowMapper;
-    private final JdbcTemplate jdbcTemplate;
 
-    private static final String FIND_ALL_QUERY =  "SELECT * FROM FILMS AS f LEFT JOIN MPA AS m ON  f.MPA_ID = m.id;";
+    private static final String FIND_ALL_QUERY = "SELECT * FROM FILMS";
     private static final String FIND_BY_ID_QUERY = "SELECT * FROM films WHERE id = ?";
+    private static final String INSERT_QUERY = "INSERT INTO FILMS(NAME, DESCRIPTION, RELEASEDATE, DURATION, MPA_ID)"
+            + "VALUES (?, ?, ?, ?, ?)";
 
-
-    @Override
-    public Film create(Film film) {
-        return null;
+    public FilmDbStorage(JdbcTemplate jdbc, RowMapper<Film> mapper) {
+        super(jdbc, mapper);
     }
 
-    @Override
+    public Film create(Film film) {
+        long id = insert(INSERT_QUERY,
+                film.getName(),
+                film.getDescription(),
+                java.sql.Date.valueOf(film.getReleaseDate()),
+                film.getDuration(),
+                film.getMpa_id()
+        );
+        film.setId(id);
+        return film;
+    }
+
+
     public Film update(Film film) {
         return null;
     }
 
-    @Override
-    public Collection<Film> findAll() {
-        return jdbcTemplate.query(FIND_ALL_QUERY, filmRowMapper);
+
+    public List<Film> getAllFilm() {
+        return findMany(FIND_ALL_QUERY, mapper);
     }
 
-    @Override
-    public Film findFilmById(long id) {
-        return null;
+
+    public Optional<Film> findFilmById(long id) {
+        return findOne(FIND_BY_ID_QUERY, id);
     }
 
-    @Override
+
     public void deleteFilm(long filmId) {
 
     }

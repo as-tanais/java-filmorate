@@ -6,12 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Mpa {
-    @NonNull
-    private Integer id;
-
-    @NonNull
+    private Long id;
     private String name;
 }

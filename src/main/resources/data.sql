@@ -1,11 +1,6 @@
-
---insert into users (id, email, login, name) values (1, 'test@test.ru', 'login', 'name');
-delete from FILMS;
-
 delete from mpa;
+delete from genres;
 
-delete
-from genres;
 insert into mpa(id, name)
 values (1, 'G'),
        (2, 'PG'),
@@ -19,7 +14,3 @@ values (1, 'Комедия'),
        (4, 'Триллер'),
        (5, 'Документальный'),
        (6, 'Боевик');
-
-
-
-insert into films (id, name, DESCRIPTION, DURATION, MPA_ID) values (1, 'filmname', 'des', 10, 1);
