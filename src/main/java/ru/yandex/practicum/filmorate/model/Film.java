@@ -9,9 +9,7 @@ import ru.yandex.practicum.filmorate.validators.CheckReleaseDate;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Film.
@@ -29,6 +27,6 @@ public class Film {
     private LocalDate releaseDate;
     @Positive
     private int duration;
-    private int mpa_id;
+    private Mpa mpa;
     private List<Genre> genres = new ArrayList<>();
 }

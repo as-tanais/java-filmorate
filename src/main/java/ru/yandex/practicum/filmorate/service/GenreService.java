@@ -25,4 +25,5 @@ public class GenreService {
     public List<Genre> getAll() {
         return genreStorage.getAll();
     }
+
 }

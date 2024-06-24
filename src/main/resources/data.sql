@@ -1,6 +1,3 @@
-delete from mpa;
-delete from genres;
-
 insert into mpa(id, name)
 values (1, 'G'),
        (2, 'PG'),

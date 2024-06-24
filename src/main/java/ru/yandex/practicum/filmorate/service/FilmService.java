@@ -3,13 +3,16 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exception.ConditionsNotMetException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.storage.film.FilmDbStorage;
-import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import ru.yandex.practicum.filmorate.storage.filmgenres.FilmGenresDbStorage;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -17,48 +20,54 @@ import java.util.Optional;
 public class FilmService {
 
     private final FilmDbStorage filmDbStorage;
-    private final UserStorage userStorage;
+    private final FilmGenresDbStorage filmGenresDbStorage;
 
 
     public List<Film> getAllFilm() {
         return filmDbStorage.getAllFilm();
     }
 
-    public Film create (Film film){
-        return filmDbStorage.create(film);
-    }
+    public Film findFilmById(Long id) {
 
-    public Optional<Film> findFilmById(Long id){
         if (filmDbStorage.findFilmById(id).isEmpty()) {
             throw new NotFoundException("Фильм не найден");
         }
-        return filmDbStorage.findFilmById(id);
+
+        Film film = filmDbStorage.findFilmById(id).get();
+
+        film.setGenres(filmGenresDbStorage.getAllFilmGenre(film.getId()));
+
+        return film;
     }
 
-//    public void addLike(long filmId, long userId) {
-//        Film film = filmStorage.findFilmById(filmId);
-//        User user = userStorage.findUserById(userId);
-//        if (film != null && user != null) {
-//            film.getLikes().add(userId);
-//        } else {
-//            throw new NotFoundException("Фильм или User не найден");
-//        }
-//    }
+    public Film create(Film film) {
 
-//    public void deleteLike(long filmId, long userId) {
-//        Film film = filmStorage.findFilmById(filmId);
-//        User user = userStorage.findUserById(userId);
-//        if (film != null && user != null) {
-//            film.getLikes().remove(userId);
-//        } else {
-//            throw new NotFoundException("Фильм или User не найден");
-//        }
-//    }
-//
-//    public List<Film> getMostPopularFilms(int count) {
-//        return filmStorage.findAll().stream()
-//                .sorted((f1, f2) -> f2.getLikes().size() - f1.getLikes().size())
-//                .limit(count)
-//                .collect(Collectors.toList());
-//    }
+        Film newFilm;
+
+
+        if (film.getMpa().getId() >= 1 && film.getMpa().getId() <= 5) {
+            final List<Genre> genreList = new ArrayList<>(new HashSet<>(film.getGenres()));
+            newFilm = filmDbStorage.create(film);
+            for (Genre genre : genreList) {
+                if (genre.getId() >= 1 && genre.getId() <= 6) {
+                    filmGenresDbStorage.addFilmGenre(film.getId(), genre.getId());
+                } else {
+                    throw new ConditionsNotMetException("Такого жанра не сущетсвует");
+                }
+            }
+        } else {
+            throw new ConditionsNotMetException("MPA не сущетсвует");
+        }
+
+        return newFilm;
+    }
+
+    public void deleteFilm(Long id) {
+        filmDbStorage.deleteFilm(id);
+    }
+
+    public Film updateFilm(Film film) {
+        return filmDbStorage.updateFilm(film);
+    }
+
 }

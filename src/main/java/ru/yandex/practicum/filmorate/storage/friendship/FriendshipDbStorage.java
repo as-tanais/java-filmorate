@@ -45,5 +45,4 @@ public class FriendshipDbStorage {
         return jdbcTemplate.query(sql, userRowMapper, id, otherId);
     }
 
-
 }

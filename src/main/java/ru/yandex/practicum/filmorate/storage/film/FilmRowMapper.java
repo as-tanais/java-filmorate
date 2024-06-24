@@ -21,7 +21,7 @@ public class FilmRowMapper implements RowMapper<Film> {
         film.setDescription(rs.getString("description"));
         film.setReleaseDate(rs.getObject("releasedate", LocalDate.class));
         film.setDuration(rs.getInt("duration"));
-        film.setMpa_id(rs.getInt("mpa_id"));
+        film.setMpa(new Mpa(rs.getInt("mpa_id"), rs.getString("mpa_name")));
 
         return film;
 

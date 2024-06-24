@@ -15,19 +15,11 @@ public class LikeDbStorage implements LikeStorage {
 
     private static final String ADD_LIKE_QUERY = "INSERT INTO LIKES VALUES (?, ?)";
     private static final String DELETE_LIKE_QUERY = "DELETE FROM LIKES WHERE film_id = ? and user_id = ?";
-    private static final String GET_MOST_POPULAR_DELETE_LIKE_QUERY = "SELECT " +
-            "F.ID, " +
-            "F.NAME," +
-            "F.DESCRIPTION, " +
-            "F.RELEASEDATE, " +
-            "F.DURATION, " +
-            "F.MPA_ID, " +
-            "COUNT(*) as total " +
-            "FROM FILMS F " +
-            "JOIN LIKES L ON L.FILM_ID = F.ID " +
-            "GROUP BY F.ID " +
-            "ORDER BY total DESC, F.ID " +
-            "LIMIT ?;";
+    private static final String GET_MOST_POPULAR_LIKE_QUERY = "select f.*, mr.name mpa_name from films f " +
+            "left join likes fl on f.id = fl.film_id join mpa mr on f.mpa_id = mr.id " +
+            "group by f.name, f.id, mr.name order by count(fl.film_id) desc limit ?";
+
+
 
     @Override
     public void addLike(Long filmId, Long userId) {
@@ -41,6 +33,6 @@ public class LikeDbStorage implements LikeStorage {
 
     @Override
     public List<Film> getPopular(Integer count) {
-        return jdbcTemplate.query(GET_MOST_POPULAR_DELETE_LIKE_QUERY, new FilmRowMapper(), count);
+        return jdbcTemplate.query(GET_MOST_POPULAR_LIKE_QUERY, new FilmRowMapper(), count);
     }
 }
