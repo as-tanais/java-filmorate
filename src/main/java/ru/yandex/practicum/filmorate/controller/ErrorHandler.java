@@ -19,6 +19,7 @@ public class ErrorHandler {
         );
 
     }
+
     @ExceptionHandler(ConditionsNotMetException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleBadReqExp(ConditionsNotMetException e){

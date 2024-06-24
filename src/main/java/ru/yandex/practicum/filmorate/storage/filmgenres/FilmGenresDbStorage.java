@@ -14,8 +14,8 @@ public class FilmGenresDbStorage implements FilmGenres {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private static final String ADD_FILM_GENRE_QUERY= "INSERT INTO FILM_GENRES VALUES (?, ?)";
-    private static final String DELETE_FILM_GENRE_QUERY= "DELETE FROM FILM_GENRES WHERE FILM_ID = ? and GENRE_ID = ?";
+    private static final String ADD_FILM_GENRE_QUERY = "INSERT INTO FILM_GENRES VALUES (?, ?)";
+    private static final String DELETE_FILM_GENRE_QUERY = "DELETE FROM FILM_GENRES WHERE FILM_ID = ? and GENRE_ID = ?";
     final String sql = "select distinct g.id as id, g.name from film_genres fg left join genres g on " +
             "fg.genre_id = g.id where film_id = ?";
 

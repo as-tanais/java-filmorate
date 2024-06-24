@@ -63,7 +63,6 @@ public class UserDbStorage extends BaseRepository<User> {
     }
 
 
-
     public boolean isUserExist(long id) {
         return findById(id).isPresent();
     }

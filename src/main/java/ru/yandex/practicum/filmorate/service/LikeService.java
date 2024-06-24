@@ -32,7 +32,7 @@ public class LikeService {
         likeStorage.deleteLike(filmId, userId);
     }
 
-    public List<Film> getPopular (Integer count) {
+    public List<Film> getPopular(Integer count) {
         return likeStorage.getPopular(count);
     }
 
