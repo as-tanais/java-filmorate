@@ -69,7 +69,7 @@ public class FilmDbStorage extends BaseRepository<Film> {
 
 
     public Optional<Film> findFilmById(long id) {
-        return findOne(FIND_BY_ID_QUERY, id);
+        return Optional.of(findOne(FIND_BY_ID_QUERY, id).orElseThrow());
     }
 
 

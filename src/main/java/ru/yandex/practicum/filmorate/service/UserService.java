@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exception.ConditionsNotMetException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.friendship.FriendshipDbStorage;
@@ -39,10 +40,10 @@ public class UserService {
 
 
     public void addFriend(Long id, Long friendId) {
-        if (userDbStorage.findById(id).isEmpty() || userDbStorage.findById(friendId).isEmpty()) {
-            throw new NotFoundException("Пользователь не найден.");
+        if (id == friendId) {
+            throw new ConditionsNotMetException("Нельзя добавлять в друзья себя");
         }
-        if (id < 0 || friendId < 0) {
+        if (userDbStorage.findById(id).isEmpty() || userDbStorage.findById(friendId).isEmpty()) {
             throw new NotFoundException("Пользователь не найден.");
         }
         friendshipDbStorage.addFriend(id, friendId);
