@@ -47,9 +47,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             if (!(newFilm.getReleaseDate() == null)) {
                 oldFilm.setReleaseDate(newFilm.getReleaseDate());
             }
-            if (!(newFilm.getDuration() == null)) {
-                oldFilm.setDuration(newFilm.getDuration());
-            }
+            oldFilm.setDuration(newFilm.getDuration());
             return oldFilm;
         }
         throw new NotFoundException("Film с ID: " + newFilm.getId() + " не найден.");

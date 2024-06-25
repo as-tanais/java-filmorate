@@ -14,6 +14,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CheckReleaseDate {
     String message() default "Дата фильма не может быть раньше 28.12.1895";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

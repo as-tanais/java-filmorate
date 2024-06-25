@@ -8,8 +8,8 @@ import org.hibernate.validator.constraints.Length;
 import ru.yandex.practicum.filmorate.validators.CheckReleaseDate;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Film.
@@ -26,6 +26,7 @@ public class Film {
     @CheckReleaseDate
     private LocalDate releaseDate;
     @Positive
-    private Integer duration;
-    private Set<Long> likes = new LinkedHashSet<>();
+    private int duration;
+    private Mpa mpa;
+    private List<Genre> genres = new ArrayList<>();
 }
